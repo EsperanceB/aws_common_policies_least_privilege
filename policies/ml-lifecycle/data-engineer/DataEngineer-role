@@ -1,0 +1,212 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    // -------------------------
+    // S3: data lake bucket access (scoped to prefixes)
+    // -------------------------
+    {
+      "Sid": "S3ListBucketWithPrefixOnly",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "raw/*",
+            "processed/*",
+            "archived/*",
+            "athena-results/*",
+            "cloudtrail-logs/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "S3ObjectRWWithinLakePrefixes",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>/raw/*",
+        "arn:aws:s3:::<BUCKET_NAME>/processed/*",
+        "arn:aws:s3:::<BUCKET_NAME>/archived/*",
+        "arn:aws:s3:::<BUCKET_NAME>/athena-results/*",
+        "arn:aws:s3:::<BUCKET_NAME>/cloudtrail-logs/*"
+      ]
+    },
+    {
+      "Sid": "S3AllowBucketVersioningAndLifecycleForThisBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketVersioning",
+        "s3:PutBucketVersioning",
+        "s3:GetLifecycleConfiguration",
+        "s3:PutLifecycleConfiguration",
+        "s3:GetBucketTagging",
+        "s3:PutBucketTagging"
+      ],
+      "Resource": "arn:aws:s3:::<BUCKET_NAME>"
+    },
+
+    // -------------------------
+    // Glue: database/table/crawler operations (scoped)
+    // -------------------------
+    {
+      "Sid": "GlueCatalogReadScoped",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetCatalog",
+        "glue:GetDatabases",
+        "glue:GetDatabase",
+        "glue:GetTables",
+        "glue:GetTable",
+        "glue:GetPartitions",
+        "glue:GetPartition"
+      ],
+      "Resource": [
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:catalog",
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:database/<GLUE_DB>",
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:table/<GLUE_DB>/*"
+      ]
+    },
+    {
+      "Sid": "GlueCreateAndManageDbTablesScoped",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:UpdateDatabase",
+        "glue:DeleteDatabase",
+        "glue:CreateTable",
+        "glue:UpdateTable",
+        "glue:DeleteTable",
+        "glue:BatchCreatePartition",
+        "glue:BatchDeletePartition",
+        "glue:CreatePartition",
+        "glue:UpdatePartition",
+        "glue:DeletePartition"
+      ],
+      "Resource": [
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:catalog",
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:database/<GLUE_DB>",
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:table/<GLUE_DB>/*"
+      ]
+    },
+    {
+      "Sid": "GlueCrawlerManageScopedByNamePrefix",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateCrawler",
+        "glue:UpdateCrawler",
+        "glue:DeleteCrawler",
+        "glue:StartCrawler",
+        "glue:StopCrawler",
+        "glue:GetCrawler",
+        "glue:GetCrawlers"
+      ],
+      "Resource": [
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:crawler/crawler-churn-*",
+        "arn:aws:glue:<REGION>:<ACCOUNT_ID>:crawler/*"
+      ]
+    },
+
+    // -------------------------
+    // Athena: run queries in one workgroup (and read results)
+    // -------------------------
+    {
+      "Sid": "AthenaQueryInWorkgroupOnly",
+      "Effect": "Allow",
+      "Action": [
+        "athena:StartQueryExecution",
+        "athena:StopQueryExecution",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:ListQueryExecutions",
+        "athena:GetWorkGroup",
+        "athena:ListWorkGroups",
+        "athena:GetDataCatalog",
+        "athena:ListDataCatalogs",
+        "athena:GetDatabase",
+        "athena:ListDatabases",
+        "athena:GetTableMetadata",
+        "athena:ListTableMetadata"
+      ],
+      "Resource": [
+        "arn:aws:athena:<REGION>:<ACCOUNT_ID>:workgroup/<ATHENA_WORKGROUP>",
+        "arn:aws:athena:<REGION>:<ACCOUNT_ID>:datacatalog/*"
+      ]
+    },
+
+    // -------------------------
+    // Lake Formation: governance actions for lab (pragmatic least-priv)
+    // Note: LF permissions are hard to fully resource-scope; many actions require "*".
+    // -------------------------
+    {
+      "Sid": "LakeFormationGovernanceForLab",
+      "Effect": "Allow",
+      "Action": [
+        "lakeformation:GetDataLakeSettings",
+        "lakeformation:PutDataLakeSettings",
+        "lakeformation:RegisterResource",
+        "lakeformation:DeregisterResource",
+        "lakeformation:ListResources",
+        "lakeformation:GrantPermissions",
+        "lakeformation:RevokePermissions",
+        "lakeformation:ListPermissions",
+        "lakeformation:GetResourceLFTags",
+        "lakeformation:AddLFTagsToResource",
+        "lakeformation:RemoveLFTagsFromResource",
+        "lakeformation:CreateLFTag",
+        "lakeformation:UpdateLFTag",
+        "lakeformation:DeleteLFTag",
+        "lakeformation:ListLFTags",
+        "lakeformation:GetLFTag",
+        "lakeformation:SearchTablesByLFTags",
+        "lakeformation:GetDataAccess"
+      ],
+      "Resource": "*"
+    },
+
+    // -------------------------
+    // CloudTrail: create/manage a single trail (CloudTrail does not support tight ARN scoping well)
+    // -------------------------
+    {
+      "Sid": "CloudTrailForS3DataEventsLab",
+      "Effect": "Allow",
+      "Action": [
+        "cloudtrail:CreateTrail",
+        "cloudtrail:DeleteTrail",
+        "cloudtrail:UpdateTrail",
+        "cloudtrail:StartLogging",
+        "cloudtrail:StopLogging",
+        "cloudtrail:DescribeTrails",
+        "cloudtrail:GetTrailStatus",
+        "cloudtrail:GetEventSelectors",
+        "cloudtrail:PutEventSelectors",
+        "cloudtrail:LookupEvents",
+        "cloudtrail:ListTrails"
+      ],
+      "Resource": "*"
+    },
+
+    // -------------------------
+    // IAM PassRole: allow Glue to use its service role (tightened to role name prefix)
+    // If you create Glue crawler roles like: AWSGlueServiceRole-churn-crawler
+    // -------------------------
+    {
+      "Sid": "AllowPassGlueCrawlerServiceRoleOnly",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::<ACCOUNT_ID>:role/AWSGlueServiceRole-*"
+    }
+  ]
+}
