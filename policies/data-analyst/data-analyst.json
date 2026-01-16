@@ -1,0 +1,101 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AthenaQueryAccess",
+      "Effect": "Allow",
+      "Action": [
+        "athena:StartQueryExecution",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:StopQueryExecution",
+        "athena:GetWorkGroup",
+        "athena:ListQueryExecutions",
+        "athena:GetNamedQuery",
+        "athena:CreateNamedQuery",
+        "athena:DeleteNamedQuery"
+      ],
+      "Resource": [
+        "arn:aws:athena:*:*:workgroup/*"
+      ]
+    },
+    {
+      "Sid": "GlueCatalogReadAccess",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetTable",
+        "glue:GetTables",
+        "glue:GetPartition",
+        "glue:GetPartitions",
+        "glue:GetTableVersions"
+      ],
+      "Resource": [
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/*",
+        "arn:aws:glue:*:*:table/*/*"
+      ]
+    },
+    {
+      "Sid": "S3DataReadAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-data-lake-bucket/*",
+        "arn:aws:s3:::your-data-lake-bucket"
+      ]
+    },
+    {
+      "Sid": "S3QueryResultsAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-athena-results-bucket/*",
+        "arn:aws:s3:::your-athena-results-bucket"
+      ]
+    },
+    {
+      "Sid": "QuickSightAccess",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateDataSource",
+        "quicksight:DescribeDataSource",
+        "quicksight:UpdateDataSource",
+        "quicksight:DeleteDataSource",
+        "quicksight:CreateDataSet",
+        "quicksight:DescribeDataSet",
+        "quicksight:UpdateDataSet",
+        "quicksight:DeleteDataSet",
+        "quicksight:CreateAnalysis",
+        "quicksight:DescribeAnalysis",
+        "quicksight:UpdateAnalysis",
+        "quicksight:DeleteAnalysis"
+      ],
+      "Resource": [
+        "arn:aws:quicksight:*:*:datasource/*",
+        "arn:aws:quicksight:*:*:dataset/*",
+        "arn:aws:quicksight:*:*:analysis/*"
+      ]
+    },
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetLogEvents",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:/aws/athena/*"
+      ]
+    }
+  ]
+}

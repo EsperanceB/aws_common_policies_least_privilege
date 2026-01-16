@@ -1,0 +1,28 @@
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# Local testing
+test-*.json
+local-*.json
+.env
+.env.local
+
+# AWS credentials (never commit these!)
+credentials
+config
+*.pem
+*.key
+
+# System files
+Thumbs.db
+desktop.ini
