@@ -84,10 +84,17 @@
       ]
     },
     {
-      "Sid": "ECRAccess",
+      "Sid": "ECRAuthorizationToken",
       "Effect": "Allow",
       "Action": [
-        "ecr:GetAuthorizationToken",
+        "ecr:GetAuthorizationToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRepositoryAccess",
+      "Effect": "Allow",
+      "Action": [
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
         "ecr:BatchGetImage",
@@ -96,7 +103,9 @@
         "ecr:UploadLayerPart",
         "ecr:CompleteLayerUpload"
       ],
-      "Resource": "*"
+      "Resource": [
+        "arn:aws:ecr:*:*:repository/your-app-*"
+      ]
     }
   ]
 }

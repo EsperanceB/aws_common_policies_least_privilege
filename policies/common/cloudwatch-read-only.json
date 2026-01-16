@@ -23,7 +23,15 @@
         "cloudwatch:ListMetrics",
         "cloudwatch:DescribeAlarms"
       ],
-      "Resource": "*"
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": [
+            "us-east-1",
+            "us-west-2"
+          ]
+        }
+      }
     }
   ]
 }
