@@ -1,0 +1,111 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CodePipelineFullManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:CreatePipeline",
+        "codepipeline:UpdatePipeline",
+        "codepipeline:DeletePipeline",
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineState",
+        "codepipeline:ListPipelines",
+        "codepipeline:TagResource",
+        "codepipeline:UntagResource"
+      ],
+      "Resource": [
+        "arn:aws:codepipeline:*:*:*"
+      ]
+    },
+    {
+      "Sid": "CodeBuildProjectManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:CreateProject",
+        "codebuild:UpdateProject",
+        "codebuild:DeleteProject",
+        "codebuild:BatchGetProjects",
+        "codebuild:ListProjects"
+      ],
+      "Resource": [
+        "arn:aws:codebuild:*:*:project/*"
+      ]
+    },
+    {
+      "Sid": "CodeDeployApplicationManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:CreateApplication",
+        "codedeploy:UpdateApplication",
+        "codedeploy:DeleteApplication",
+        "codedeploy:GetApplication",
+        "codedeploy:CreateDeploymentGroup",
+        "codedeploy:UpdateDeploymentGroup",
+        "codedeploy:DeleteDeploymentGroup",
+        "codedeploy:GetDeploymentGroup"
+      ],
+      "Resource": [
+        "arn:aws:codedeploy:*:*:deploymentgroup:*",
+        "arn:aws:codedeploy:*:*:application:*"
+      ]
+    },
+    {
+      "Sid": "IAMPassRole",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::*:role/service-role/CodePipeline*",
+        "arn:aws:iam::*:role/service-role/CodeBuild*",
+        "arn:aws:iam::*:role/service-role/CodeDeploy*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "iam:PassedToService": [
+            "codepipeline.amazonaws.com",
+            "codebuild.amazonaws.com",
+            "codedeploy.amazonaws.com"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "CloudFormationAccess",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:GetTemplate",
+        "cloudformation:ValidateTemplate"
+      ],
+      "Resource": [
+        "arn:aws:cloudformation:*:*:stack/*"
+      ]
+    },
+    {
+      "Sid": "ECRAuthorizationToken",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetAuthorizationToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRepositoryAccess",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload"
+      ],
+      "Resource": [
+        "arn:aws:ecr:*:*:repository/your-app-*"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CodePipelineManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineState",
+        "codepipeline:GetPipelineExecution",
+        "codepipeline:ListPipelineExecutions",
+        "codepipeline:StartPipelineExecution",
+        "codepipeline:StopPipelineExecution",
+        "codepipeline:RetryStageExecution"
+      ],
+      "Resource": [
+        "arn:aws:codepipeline:*:*:*"
+      ]
+    },
+    {
+      "Sid": "CodeBuildManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:StartBuild",
+        "codebuild:StopBuild",
+        "codebuild:BatchGetBuilds",
+        "codebuild:BatchGetProjects"
+      ],
+      "Resource": [
+        "arn:aws:codebuild:*:*:project/*"
+      ]
+    },
+    {
+      "Sid": "CodeDeployManagement",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:GetApplication",
+        "codedeploy:CreateDeployment",
+        "codedeploy:StopDeployment"
+      ],
+      "Resource": [
+        "arn:aws:codedeploy:*:*:deploymentgroup:*",
+        "arn:aws:codedeploy:*:*:application:*"
+      ]
+    },
+    {
+      "Sid": "S3ArtifactAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-artifact-bucket/*",
+        "arn:aws:s3:::your-artifact-bucket"
+      ]
+    },
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:GetLogEvents"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:/aws/codebuild/*"
+      ]
+    }
+  ]
+}

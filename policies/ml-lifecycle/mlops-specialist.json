@@ -1,0 +1,105 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "SageMakerExperiments",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateExperiment",
+        "sagemaker:DescribeExperiment",
+        "sagemaker:DeleteExperiment",
+        "sagemaker:CreateTrial",
+        "sagemaker:DescribeTrial",
+        "sagemaker:DeleteTrial",
+        "sagemaker:CreateTrialComponent",
+        "sagemaker:DescribeTrialComponent",
+        "sagemaker:UpdateTrialComponent",
+        "sagemaker:DeleteTrialComponent"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:experiment/*",
+        "arn:aws:sagemaker:*:*:experiment-trial/*",
+        "arn:aws:sagemaker:*:*:experiment-trial-component/*"
+      ]
+    },
+    {
+      "Sid": "SageMakerModelRegistry",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateModelPackageGroup",
+        "sagemaker:DescribeModelPackageGroup",
+        "sagemaker:DeleteModelPackageGroup",
+        "sagemaker:CreateModelPackage",
+        "sagemaker:DescribeModelPackage",
+        "sagemaker:UpdateModelPackage",
+        "sagemaker:DeleteModelPackage",
+        "sagemaker:ListModelPackages"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:model-package-group/*",
+        "arn:aws:sagemaker:*:*:model-package/*"
+      ]
+    },
+    {
+      "Sid": "SageMakerPipelines",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreatePipeline",
+        "sagemaker:DescribePipeline",
+        "sagemaker:UpdatePipeline",
+        "sagemaker:DeletePipeline",
+        "sagemaker:StartPipelineExecution",
+        "sagemaker:DescribePipelineExecution",
+        "sagemaker:StopPipelineExecution",
+        "sagemaker:ListPipelineExecutions"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:pipeline/*",
+        "arn:aws:sagemaker:*:*:pipeline/*/execution/*"
+      ]
+    },
+    {
+      "Sid": "SageMakerMonitoring",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateMonitoringSchedule",
+        "sagemaker:DescribeMonitoringSchedule",
+        "sagemaker:UpdateMonitoringSchedule",
+        "sagemaker:DeleteMonitoringSchedule",
+        "sagemaker:StartMonitoringSchedule",
+        "sagemaker:StopMonitoringSchedule"
+      ],
+      "Resource": [
+        "arn:aws:sagemaker:*:*:monitoring-schedule/*"
+      ]
+    },
+    {
+      "Sid": "S3FullAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::your-mlops-bucket/*",
+        "arn:aws:s3:::your-mlops-bucket"
+      ]
+    },
+    {
+      "Sid": "StepFunctionsExecution",
+      "Effect": "Allow",
+      "Action": [
+        "states:StartExecution",
+        "states:DescribeExecution",
+        "states:StopExecution",
+        "states:ListExecutions"
+      ],
+      "Resource": [
+        "arn:aws:states:*:*:stateMachine:*",
+        "arn:aws:states:*:*:execution:*:*"
+      ]
+    }
+  ]
+}
